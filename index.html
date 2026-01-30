@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- SEO -->
+  <title>物件位置推定マップ | 周辺施設から物件の場所を特定</title>
+  <meta name="description" content="周辺施設（学校、病院、店舗など）までの徒歩距離から物件の位置を地図上で推定するツール。不動産物件探しや位置特定に便利です。">
+  <meta name="keywords" content="物件,位置推定,地図,不動産,周辺施設,徒歩距離">
+  <meta name="author" content="Property Locator">
+  <link rel="canonical" href="https://example.com/">
+
+  <!-- OGP -->
+  <meta property="og:title" content="物件位置推定マップ">
+  <meta property="og:description" content="周辺施設までの徒歩距離から物件の位置を地図上で推定するツール">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://example.com/">
+  <meta property="og:image" content="https://example.com/ogp.png">
+  <meta property="og:locale" content="ja_JP">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="物件位置推定マップ">
+  <meta name="twitter:description" content="周辺施設までの徒歩距離から物件の位置を推定">
+
+  <!-- Favicon (TODO: Add your favicon) -->
+  <!-- <link rel="icon" href="/favicon.ico"> -->
+
+  <!-- Leaflet -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <!-- App Styles -->
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Google AdSense (TODO: Replace with your AdSense code) -->
+  <!-- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script> -->
+</head>
+<body>
+  <div class="loading" id="loading">検索中...</div>
+
+  <div class="container">
+    <div class="sidebar">
+      <div class="sidebar-content">
+        <h1>物件位置推定マップ</h1>
+
+        <div class="config-section">
+          <label for="distanceRatio">距離換算係数（徒歩距離→直線距離）</label>
+          <input type="number" id="distanceRatio" value="0.75" step="0.05" min="0.5" max="1.0">
+          <span style="font-size: 0.8rem; color: #888;">（通常 0.7〜0.8）</span>
+        </div>
+
+        <div class="facility-list" id="facilityList"></div>
+
+        <button class="btn btn-add" onclick="addFacility()">+ 施設を追加</button>
+
+        <div style="margin-top: 20px;">
+          <button class="btn btn-primary" onclick="searchAndDraw()">位置を推定</button>
+          <button class="btn btn-secondary" onclick="clearMap()">クリア</button>
+        </div>
+      </div>
+
+      <!-- Ad Space -->
+      <div class="ad-space" id="adSpace">
+        <!-- Google AdSense Ad Unit (TODO: Replace with your ad code) -->
+        <!--
+        <ins class="adsbygoogle"
+             style="display:block"
+             data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+             data-ad-slot="XXXXXXXXXX"
+             data-ad-format="auto"
+             data-full-width-responsive="true"></ins>
+        <script>
+             (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+        -->
+        広告スペース
+      </div>
+
+      <!-- Footer -->
+      <div class="footer">
+        <a href="privacy.html">プライバシーポリシー</a>
+        <span style="margin: 0 5px;">|</span>
+        <span>Map data &copy; OpenStreetMap contributors</span>
+      </div>
+    </div>
+
+    <div id="map"></div>
+  </div>
+
+  <!-- App Script -->
+  <script src="app.js"></script>
+</body>
+</html>
