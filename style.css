@@ -190,6 +190,18 @@ h1 {
   background: #43A047;
 }
 
+.btn-amazon {
+  background: #FF9900;
+  color: white;
+  text-decoration: none;
+  text-align: center;
+  display: block;
+}
+
+.btn-amazon:hover {
+  background: #E68A00;
+}
+
 .btn-remove {
   background: #f44336;
   color: white;
