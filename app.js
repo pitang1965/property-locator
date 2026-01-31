@@ -5,11 +5,11 @@
 
 const STORAGE_KEY = 'propertyLocator_facilities';
 
-// Initial facility data (empty - user will add their own)
+// Initial facility data (example: Tokyo Station area)
 const initialFacilities = [
-  { name: "", distance: 500, enabled: true, lat: null, lng: null },
-  { name: "", distance: 500, enabled: true, lat: null, lng: null },
-  { name: "", distance: 500, enabled: true, lat: null, lng: null },
+  { name: "東京駅", distance: 800, enabled: true, lat: 35.6812, lng: 139.7671 },
+  { name: "日本橋駅", distance: 400, enabled: true, lat: 35.6818, lng: 139.7744 },
+  { name: "三越前駅", distance: 480, enabled: true, lat: 35.6858, lng: 139.7734 },
 ];
 
 let facilities = loadFacilities();
