@@ -202,6 +202,15 @@ h1 {
   background: #E68A00;
 }
 
+.btn-googlemap {
+  background: #34A853;
+  color: white;
+}
+
+.btn-googlemap:hover {
+  background: #2E8B47;
+}
+
 .btn-remove {
   background: #f44336;
   color: white;

@@ -58,6 +58,7 @@ let map;
 let circles = [];
 let markers = [];
 let estimatedMarker = null;
+let estimatedPosition = null; // Store estimated coordinates
 let settingLocationFor = null; // Index of facility being set manually
 
 // Color palette
@@ -355,9 +356,11 @@ function searchAndDraw(silent = false) {
   document.getElementById('legendContent').innerHTML = legendHTML;
 
   // Calculate estimated position
+  estimatedPosition = null;
   if (results.length >= 2) {
     const estimated = estimatePosition(results);
     if (estimated) {
+      estimatedPosition = estimated;
       estimatedMarker = L.marker([estimated.lat, estimated.lng], {
         icon: L.divIcon({
           className: 'estimated-marker',
@@ -412,6 +415,19 @@ function clearMap() {
   circles = [];
   markers = [];
   estimatedMarker = null;
+  estimatedPosition = null;
+}
+
+/**
+ * Open Google Maps at the estimated position
+ */
+function openGoogleMaps() {
+  if (!estimatedPosition) {
+    alert('推定位置がありません。先に「位置を推定」を実行してください。');
+    return;
+  }
+  const url = `https://www.google.com/maps?q=${estimatedPosition.lat},${estimatedPosition.lng}`;
+  window.open(url, '_blank', 'noopener,noreferrer');
 }
 
 // Initialize on DOM ready
