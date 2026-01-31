@@ -430,5 +430,33 @@ function openGoogleMaps() {
   window.open(url, '_blank', 'noopener,noreferrer');
 }
 
+/**
+ * Convert decimal degrees to DMS (degrees, minutes, seconds) format
+ */
+function toDMS(decimal, isLat) {
+  const absolute = Math.abs(decimal);
+  const degrees = Math.floor(absolute);
+  const minutesFloat = (absolute - degrees) * 60;
+  const minutes = Math.floor(minutesFloat);
+  const seconds = ((minutesFloat - minutes) * 60).toFixed(1);
+  const direction = isLat ? (decimal >= 0 ? 'N' : 'S') : (decimal >= 0 ? 'E' : 'W');
+  return `${degrees}°${minutes}'${seconds}"${direction}`;
+}
+
+/**
+ * Search hazard map info using Google AI mode
+ */
+function searchHazardInfo() {
+  if (!estimatedPosition) {
+    alert('推定位置がありません。先に「位置を推定」を実行してください。');
+    return;
+  }
+  const latDMS = toDMS(estimatedPosition.lat, true);
+  const lngDMS = toDMS(estimatedPosition.lng, false);
+  const query = encodeURIComponent(`${latDMS} ${lngDMS}のハザードマップ情報は？`);
+  const url = `https://www.google.com/search?q=${query}&udm=50`;
+  window.open(url, '_blank', 'noopener,noreferrer');
+}
+
 // Initialize on DOM ready
 document.addEventListener('DOMContentLoaded', initMap);

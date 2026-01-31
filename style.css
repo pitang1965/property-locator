@@ -211,6 +211,15 @@ h1 {
   background: #2E8B47;
 }
 
+.btn-hazard {
+  background: #E65100;
+  color: white;
+}
+
+.btn-hazard:hover {
+  background: #BF360C;
+}
+
 .btn-remove {
   background: #f44336;
   color: white;
