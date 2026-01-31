@@ -57,7 +57,7 @@
 
         <div style="margin-top: 20px;">
           <button class="btn btn-primary" onclick="searchAndDraw()">位置を推定</button>
-          <button class="btn btn-secondary" onclick="clearMap()">クリア</button>
+          <button class="btn btn-secondary" onclick="resetAllData()">データをリセット</button>
         </div>
       </div>
 
@@ -87,6 +87,7 @@
     </div>
 
     <div id="map"></div>
+    <div id="mapInstruction" class="map-instruction" style="display: none;"></div>
   </div>
 
   <!-- App Script -->
