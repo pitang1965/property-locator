@@ -141,6 +141,9 @@ function initMap() {
   legend.addTo(map);
 
   renderFacilityList();
+
+  // Auto-estimate on startup (silent mode - no alert if no data)
+  searchAndDraw(true);
 }
 
 /**
@@ -302,15 +305,18 @@ function removeFacility(index) {
 
 /**
  * Main draw function - uses manually set locations
+ * @param {boolean} silent - If true, suppress alert when no facilities
  */
-function searchAndDraw() {
+function searchAndDraw(silent = false) {
   clearMap();
 
   const ratio = parseFloat(document.getElementById('distanceRatio').value) || 0.75;
   const enabledFacilities = facilities.filter(f => f.enabled && f.lat !== null && f.lng !== null);
 
   if (enabledFacilities.length === 0) {
-    alert('位置が設定された施設がありません。\n\n📍ボタンで地図をクリック、または📋ボタンでGoogle Maps URLを貼り付けて位置を設定してください。');
+    if (!silent) {
+      alert('位置が設定された施設がありません。\n\n📍ボタンで地図をクリック、または📋ボタンでGoogle Maps URLを貼り付けて位置を設定してください。');
+    }
     return;
   }
 
