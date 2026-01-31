@@ -4,7 +4,7 @@
 
 ## デモ
 
-https://pitang1965.github.io/property-locator/
+https://property-locator.over40web.club/
 
 ## 機能
 
