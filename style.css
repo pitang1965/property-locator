@@ -390,11 +390,15 @@ h1 {
   padding-top: 15px;
   border-top: 1px solid #eee;
   min-height: 100px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  width: 100%;
   color: #999;
   font-size: 0.8rem;
+}
+
+.ad-space .adsbygoogle {
+  display: block;
+  width: 100%;
+  min-height: 100px;
 }
 
 /* Footer */
