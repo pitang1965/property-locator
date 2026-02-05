@@ -1,6 +1,6 @@
 /**
  * Property Location Estimator
- * 物件位置推定マップ
+ * 距離で物件特定
  */
 
 const STORAGE_KEY = 'propertyLocator_facilities';
