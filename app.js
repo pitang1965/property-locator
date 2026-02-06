@@ -44,6 +44,120 @@ function loadFacilities() {
 }
 
 /**
+ * Compress string with deflate and encode as URL-safe Base64
+ */
+async function compressToBase64(str) {
+  const stream = new Blob([str]).stream().pipeThrough(new CompressionStream('deflate-raw'));
+  const buffer = await new Response(stream).arrayBuffer();
+  const bytes = new Uint8Array(buffer);
+  let binary = '';
+  for (let i = 0; i < bytes.length; i++) {
+    binary += String.fromCharCode(bytes[i]);
+  }
+  return btoa(binary).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+}
+
+/**
+ * Decode URL-safe Base64 and decompress with inflate
+ */
+async function decompressFromBase64(encoded) {
+  let base64 = encoded.replace(/-/g, '+').replace(/_/g, '/');
+  const pad = base64.length % 4;
+  if (pad) base64 += '='.repeat(4 - pad);
+  const binary = atob(base64);
+  const bytes = Uint8Array.from(binary, c => c.charCodeAt(0));
+  const stream = new Blob([bytes]).stream().pipeThrough(new DecompressionStream('deflate-raw'));
+  return await new Response(stream).text();
+}
+
+/**
+ * Encode facilities data to compressed Base64 string for URL sharing
+ */
+async function encodeFacilitiesData() {
+  const ratio = parseFloat(document.getElementById('distanceRatio').value) || 0.75;
+  const data = {
+    f: facilities.map(f => ({
+      n: f.name,
+      d: f.distance,
+      e: f.enabled,
+      la: f.lat,
+      lo: f.lng
+    })),
+    r: ratio
+  };
+  return await compressToBase64(JSON.stringify(data));
+}
+
+/**
+ * Decode facilities data from compressed Base64 string
+ */
+async function decodeFacilitiesData(encoded) {
+  try {
+    const json = await decompressFromBase64(encoded);
+    const data = JSON.parse(json);
+    if (!data.f || !Array.isArray(data.f)) return null;
+    return {
+      facilities: data.f.map(f => ({
+        name: f.n || '',
+        distance: f.d || 0,
+        enabled: f.e !== false,
+        lat: f.la ?? null,
+        lng: f.lo ?? null
+      })),
+      ratio: data.r || 0.75
+    };
+  } catch (e) {
+    console.warn('Failed to decode shared data:', e);
+    return null;
+  }
+}
+
+/**
+ * Load facilities data from URL hash (#d=...)
+ */
+async function loadFromURLHash() {
+  const hash = window.location.hash;
+  if (!hash || !hash.startsWith('#d=')) return null;
+  const encoded = hash.substring(3);
+  return await decodeFacilitiesData(encoded);
+}
+
+/**
+ * Create share URL and copy to clipboard
+ */
+async function shareURL() {
+  const encoded = await encodeFacilitiesData();
+  const url = `${window.location.origin}${window.location.pathname}#d=${encoded}`;
+
+  window.location.hash = `d=${encoded}`;
+
+  navigator.clipboard.writeText(url).then(() => {
+    showToast('共有URLをコピーしました');
+  }).catch(() => {
+    prompt('共有URL:', url);
+  });
+}
+
+/**
+ * Show a temporary toast notification
+ */
+function showToast(message) {
+  const existing = document.querySelector('.toast');
+  if (existing) existing.remove();
+
+  const toast = document.createElement('div');
+  toast.className = 'toast';
+  toast.textContent = message;
+  document.body.appendChild(toast);
+
+  setTimeout(() => toast.classList.add('show'), 10);
+  setTimeout(() => {
+    toast.classList.remove('show');
+    setTimeout(() => toast.remove(), 300);
+  }, 3000);
+}
+
+/**
  * Reset all data
  */
 function resetAllData() {
@@ -141,10 +255,17 @@ function initMap() {
   };
   legend.addTo(map);
 
-  renderFacilityList();
-
-  // Auto-estimate on startup (silent mode - no alert if no data)
-  searchAndDraw(true);
+  // Check for shared data in URL hash
+  loadFromURLHash().then(sharedData => {
+    if (sharedData) {
+      facilities = sharedData.facilities;
+      document.getElementById('distanceRatio').value = sharedData.ratio;
+      saveFacilities();
+      showToast('共有データを読み込みました');
+    }
+    renderFacilityList();
+    searchAndDraw(true);
+  });
 }
 
 /**

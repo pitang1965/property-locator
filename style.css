@@ -256,6 +256,15 @@ h1 {
   background: #BF360C;
 }
 
+.btn-share {
+  background: #7B1FA2;
+  color: white;
+}
+
+.btn-share:hover {
+  background: #6A1B9A;
+}
+
 .btn-remove {
   background: #f44336;
   color: white;
@@ -418,6 +427,28 @@ h1 {
 
 .footer a:hover {
   text-decoration: underline;
+}
+
+/* Toast Notification */
+.toast {
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  z-index: 10001;
+  opacity: 0;
+  transition: opacity 0.3s, transform 0.3s;
+  pointer-events: none;
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
 }
 
 /* Responsive Design */
